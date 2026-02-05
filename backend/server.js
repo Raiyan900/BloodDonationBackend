@@ -1,4 +1,5 @@
 require('dotenv').config();
+// require('dotenv').config({ path: __dirname + '/.env' });
 const express = require('express');
 const http = require('http');
 const mongoose = require('mongoose');
@@ -37,7 +38,12 @@ app.use('/api/requests', requestRoutes);
 app.use('/api/admin', adminRoutes);
 
 const PORT = process.env.PORT || 5000;
-const MONGO = process.env.MONGO_URI || 'mongodb://localhost:27017/blooddb';
+// const MONGO = process.env.MONGO_URI || 'mongodb://localhost:27017/blooddb';
+const MONGO = process.env.MONGO_URI;
+if (!MONGO) {
+  console.error('MONGO_URI is not defined');
+  process.exit(1);
+}
 
 mongoose.connect(MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
